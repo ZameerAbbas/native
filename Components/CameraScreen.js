@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   camera: {
-    flex: 1,
+    flex: 0.6,
   },
   buttonContainer: {
     flex: 1,
