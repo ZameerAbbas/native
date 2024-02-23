@@ -1,18 +1,25 @@
 {
   "expo": {
-    "name": "test-things",
+    "name": "DTreaty",
     "slug": "test-things",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
-      "**/*"
+      {
+        "uri": "./assets/models/model.json",
+        "type": "json"
+      },
+      {
+        "uri": "./assets/models/weights.bin",
+        "type": "bin" 
+      }
     ],
     "plugins": [
       [
@@ -27,7 +34,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       }
     },
