@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import { manipulateAsync } from 'expo-image-manipulator';
-
+import {Asset} from 'expo-asset'
 import  { bundleResourceIO} from '@tensorflow/tfjs-react-native';
 import { decode } from 'base64-arraybuffer';
 
@@ -35,8 +35,11 @@ export default function ImageClassifier() {
   const [predictions, setPredictions] = useState([]);
   const [Label, setLabel] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Added state for loading indicator
+  const [ready, setReady] = useState(false);
+  const [image, setImage] = useState(null);
 
-  const uri = 'applescab.jpeg'; // Replace with the path to your image
+  
+
 
   useEffect(() => {
     // Load the model and initialize TensorFlow.js
@@ -69,6 +72,7 @@ export default function ImageClassifier() {
     // Process the image and pass it to the model for prediction
     try {
       const imageArray = await preprocessImage(uri);
+      console.log(imageArray);
       const predictions = await model.predict(tf.tensor([imageArray])).data();
       setPredictions(predictions);
       const predicted_class = tf.argMax(predictions).dataSync()[0];
@@ -80,17 +84,20 @@ export default function ImageClassifier() {
   };
 
   // Function to process the image
-  const preprocessImage = async (imagePath) => {
+  const preprocessImage = async () => {
     // Manipulate image for resizing and format conversion
+    // const imagepath = require('./applescab.jpg'); // Replace with the path to your image
+    // const uri = imagepath.uri;
     const manipulatedImage = await manipulateAsync(
-        imagePath,
+        uri = require('./applescab.jpg'),
         [{ resize: { width: 224, height: 224 } }],
         { compress: 1, format: 'jpeg' }
     );
 
-    // Convert the manipulated image to a tensor
-    const { uri } = manipulatedImage;
-    const imgB64 = await FileSystem.readAsStringAsync(uri, {
+    // Use a different variable name for the image URI
+    const { uri: manipulatedUri } = manipulatedImage;
+
+    const imgB64 = await FileSystem.readAsStringAsync(manipulatedUri, {
         encoding: FileSystem.EncodingType.Base64,
     });
     const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer;
@@ -105,6 +112,7 @@ export default function ImageClassifier() {
     return preProcessedImage;
 };
 
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       {isLoading ? (
@@ -116,3 +124,4 @@ export default function ImageClassifier() {
     </View>
   );
 }
+
